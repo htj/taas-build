@@ -1,0 +1,155 @@
+/**
+ *	Super Parent build script. Collects all plugins, group name, version, ... required by all sub-projects.
+ *	@author Jakub Gutkowski <jgutkow@man.poznan.pl>, Blazej Pietrzak <blazej.pietrzak@man.poznan.pl>
+*/
+
+import java.util.jar.*
+import java.text.SimpleDateFormat;
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
+import groovy.xml.XmlUtil;
+import groovy.xml.MarkupBuilder
+
+apply from: '../parent/properties.gradle'
+
+apply plugin: 'java'
+//apply plugin: 'eclipse'
+apply plugin: 'osgi'
+//apply plugin: 'idea'
+
+repositories {
+
+    flatDir {
+        dirs '../jar'
+    }
+
+}
+
+test {
+	systemProperties 'property': 'value'
+	afterTest { desc, result ->
+		println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+	}
+	ignoreFailures = true
+}
+
+sourceSets {
+	itest {
+		java {
+			srcDir 'src/itest/java'
+		}
+		resources {
+			srcDir 'src/itest/resources'
+		}
+		compileClasspath += sourceSets.main.runtimeClasspath
+	}
+}
+
+task itest(type: Test) {
+	testClassesDir = sourceSets.itest.output.classesDir
+	classpath += sourceSets.itest.runtimeClasspath
+	ignoreFailures = true
+}
+
+
+task features << {
+	def out = new FileWriter("$buildDir/feature-temp.xml")
+	def xml = new MarkupBuilder(out);
+	xml.mkp.xmlDeclaration(version:"1.0", encoding:"UTF-8", standalone:"yes")
+	xml.features(xmlns:"http://karaf.apache.org/xmlns/features/v1.0.0", name:"${project.name}") {
+		feature(name:"${project.name}", version:project.version) {
+			getArtifacts("karaf").each {
+				bundle(getPrefix(it.file) + "mvn:${it.moduleVersion.id.group}/${it.moduleVersion.id.name}/${it.moduleVersion.id.version}")
+			}
+			bundle("mvn:${project.group}/${project.name}/${project.version}")
+		}
+	}
+	out.close()
+	file("$buildDir/feature.xml").delete()
+	if (!file("$buildDir/feature-temp.xml").renameTo(file("$buildDir/feature.xml"))) {
+		throw new IllegalStateException("Could not rename $buildDir/feature-temp.xml to $buildDir/feature.xml.");
+	}
+	println "Features for ${project.name} generated successfully."
+}
+
+features.dependsOn jar
+
+def getArtifacts(configType) {
+	try {
+		configurations[configType].resolvedConfiguration.resolvedArtifacts
+	} catch (UnknownConfigurationException ex) {
+		[]
+	}
+}
+
+def getPrefix(file) {
+	def zip = new JarFile(file)
+	if (zip.getEntry('META-INF/MANIFEST.MF') != null) {
+		if (zip.getInputStream(zip.getEntry('META-INF/MANIFEST.MF')).readLines().find { line -> (line.contains("Import-Package") || line.contains("DynamicImport-Package"))})
+			return ""
+	}
+	return "wrap:"
+}
+
+task createOsgiFeatures(type:Exec) {
+	  //on windows:
+//	  commandLine 'cmd', '/c', 'mvn karaf:features-generate-descriptor'
+	  //on linux
+//	  commandLine '.$buildDir/../../parent/createOsgiFeatures.sh'
+		executable "sh"
+		args "-c","/opt/data/jenkins/tools/Maven_3.0/bin/mvn karaf:features-generate-descriptor"
+//	  store the output instead of printing to the console:
+//	  standardOutput = new ByteArrayOutputStream()
+//	
+//	  extension method createOsgiFeatures.output() can be used to obtain the output:
+//	  ext.output = {
+//	    return standardOutput.toString()
+//	  }
+}
+
+task updateTimeInTestResultsXmls << {
+	def rootDir = "$buildDir/test-results"
+	new File(rootDir).list().findAll { fileName ->
+		fileName.endsWith(".xml")
+	}.each { fileName ->
+	    fileName = rootDir + "/" + fileName
+		if (new File(fileName).lastModified() < new Date().getTime() - 15 * 60 * 1000)
+			return;
+		def String tempName = fileName + ".old"
+		new File(fileName).renameTo(new File(tempName))
+		def testsuite = new XmlParser().parse(tempName)
+		def sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		testsuite."@timestamp" = sdf.format(new Date());
+		new XmlUtil().serialize(testsuite, new FileOutputStream(fileName))
+		new File(fileName + ".old").delete()
+	}
+}
+
+task cleanTargetDir(type: Delete) {
+	delete 'target'
+}
+
+task cleanHistoryDir(type: Delete) {
+	delete 'src/main/history'
+}
+
+jar {
+	from "$buildDir/target/classes"
+	exclude "Lib/**/*.class"
+	exclude "Lib/EGG-INFO"
+	exclude "Lib/nose"
+	exclude "Lib/man"
+	exclude "Lib/setuptools"
+	exclude "Lib/easy_install*"
+	exclude "Lib/pkg_resources*"
+	
+	from "$buildDir/target/jython-plugins-tmp"
+    exclude "Lib/**/*.class"
+	exclude "Lib/site-packages"
+	exclude "bin"
+	exclude "build"
+	exclude "cachedir"
+	exclude "jython"
+	exclude "META-INF/MANIFEST.MF"
+}
+

@@ -1,0 +1,81 @@
+/**
+ *  Parent build script. Collects all dependencies required by all sub-projects.
+ *  @author Jakub Gutkowski <jgutkow@man.poznan.pl>, Blazej Pietrzak <blazej.pietrzak@man.poznan.pl>
+ */
+
+//apply from: '../parent/superparent.gradle'
+apply from: '../parent/superparentlite.gradle'
+
+configurations {
+    karaf {
+        description = "list of bundles to install on karaf"
+        transitive = true
+        extendsFrom runtime
+    }
+
+    karaf.exclude module: "cxf-rt-frontend-jaxrs"
+    karaf.exclude module: "org.osgi.core"
+    karaf.exclude module: "org.osgi.enterprise"
+    karaf.exclude module: "activemq-all"
+    karaf.exclude module: "jboss-transaction-api_1.2_spec"
+}
+
+dependencies {
+
+    // shared dependencies for all projects, mostly for itest as listing all karaf deps is painful
+
+    testCompile group: 'junit',         name: 'junit',          version: '4.11'
+
+//    testRuntime group: 'org.hamcrest',  name: 'hamcrest-core',  version: '1.3'
+//    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.9.5'
+//    testCompile project(':framework') //Workaround: unnecessary from command line, but under Eclipse IDE the code will not compile otherwise
+
+    itestCompile group: 'junit',        name: 'junit',          version: '4.11'
+
+//    itestCompile group: ' org.ops4j.pax.exam  pax-exam-2.6.0.jar
+//    itestCompile 'org.osgi:org.osgi.core:4.3.0'
+//    itestCompile project(':framework')
+
+    itestRuntime group: 'com.google.common',                    name: 'guava',                          version: '14.0.1'
+
+    itestRuntime group: 'org.hamcrest',                         name: 'hamcrest-core',                  version: '1.3'
+
+    itestRuntime group: 'org.ops4j.util.property',              name: 'ops4j-base-util-property',       version: '1.4.0'
+    itestRuntime group: 'org.ops4j.lang',                       name: 'ops4j-base-lang',                version: '1.4.0'
+    itestRuntime group: 'org.ops4j.store',                      name: 'ops4j-base-store',               version: '1.4.0'
+    itestRuntime group: 'org.ops4j.net',                        name: 'ops4j-base-net',                 version: '1.4.0'
+    itestRuntime group: 'org.ops4j.io',                         name: 'ops4j-base-io',                  version: '1.4.0'
+    itestRuntime group: 'org.ops4j.pax.exam.rbc.client',        name: 'pax-exam-container-rbc-client',  version: '2.6.0'
+    itestRuntime group: 'org.ops4j.pax.exam.rbc.internal',      name: 'pax-exam-container-rbc',         version: '2.6.0'
+    itestRuntime group: 'org.ops4j.pax.exam.container.remote',  name: 'pax-exam-container-remote',      version: '2.6.0'
+    itestRuntime group: 'org.ops4j.pax.tinybundles',            name: 'tinybundles',                    version: '1.0.0'
+    itestRuntime group: 'org.ops4j.pax.url',                    name: 'pax-url-mvn',                    version: '1.3.6' // mvn url handler
+
+    itestRuntime group: 'org.apache.commons.compress',          name: 'commons-compress',               version: '1.4.1'
+    itestRuntime group: 'org.apache.commons.io',                name: 'commons-io',                     version: '2.4'
+
+    itestRuntime group: 'org.slf4j',                            name: 'slf4j-api',                      version: '1.7.5'
+    itestRuntime group: 'org.slf4j.impl',                       name: 'slf4j-simple',                   version: '1.6.6'
+
+
+
+}
+
+libraries = [
+    hibernate: [
+        'org.hibernate:hibernate-core:4.2.0.Final',
+        'org.hibernate.ejb:hibernate-entitymanager:4.2.0.Final',
+        'org.hibernate.annotations:hibernate-commons-annotations:4.0.2.Final',
+        'org.dom4j:dom4j:1.6.1',
+        'org.h2:h2:1.3.170',
+        'org.jboss.logging:jboss-logging:3.1.0.GA',
+        'javassist:javassist:3.18.0-GA',
+        'antlr:antlr:2.7.7',
+    ]
+]
+
+
+task createGradleWrapper(type: Wrapper) {
+    gradleVersion = '1.6'
+    scriptFile = 'startGradle'
+}

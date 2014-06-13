@@ -1,0 +1,23 @@
+/**
+ *
+ *  @author Blazej Pietrzak <blazej.pietrzak@man.poznan.pl>
+ */
+
+apply from: '../parent/superparentlite.gradle'
+
+dependencies {
+
+    compile group: 'com.googlecode.catch-exception',            name: 'catch-exception',                            version: '1.2.0'
+
+    compile group: 'org.apache.karaf.tooling.exam.container',   name: 'org.apache.karaf.tooling.exam.container',    version: '2.3.2'
+    compile group: 'org.apache.karaf.tooling.exam.options',     name: 'org.apache.karaf.tooling.exam.options',      version: '2.3.2'
+
+    compile group: 'org.apache.activemq',                       name: 'activemq-all',                               version: '5.4.2'
+    compile group: 'org.apache.cxf',                            name: 'cxf-bundle',                                 version: '2.7.6'
+
+    compile group: 'org.mockito',                               name: 'mockito-core',                               version: '1.9.5'
+
+    compile group: 'org.ops4j.pax.exam',                        name: 'pax-exam',                                   version: '2.6.0'
+    compile group: 'org.osgi',                                  name: 'org.osgi.core',                              version: '4.3.1'
+
+}
