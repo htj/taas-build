@@ -7,18 +7,17 @@ apply from: '../parent/buildlocal.gradle'
 
 dependencies {
 
-//    compile 'com.jcraft:jsch:0.1.50'
     compile group: 'com.jcraft',                    name: 'jsch',                       version: '0.1.50'
 
 
     testRuntime group: 'org.hamcrest',              name: 'hamcrest-core',              version: '1.3'
 
 
+    itestCompile group: 'javax.inject',             name: 'javax.inject',               version: '1'
     itestCompile group: 'org.ops4j.pax.exam',       name: 'pax-exam',                   version: '2.6.0'
     itestCompile group: 'org.ops4j.pax.exam.junit', name: 'pax-exam-junit4',            version: '2.6.0'
     itestCompile group: 'org.osgi.core',            name: 'org.osgi.core',              version: '4.3.1'
     itestCompile group: 'org.ops4j.pax.exam.spi',   name: 'pax-exam-spi',               version: '2.6.0'
-    itestCompile group: 'javax.inject',             name: 'javax.inject',               version: '1'
 
     itestCompile project(':framework')
 
