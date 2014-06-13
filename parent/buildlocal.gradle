@@ -1,9 +1,7 @@
 /**
- *  Parent build script. Collects all dependencies required by all sub-projects.
- *  @author Jakub Gutkowski <jgutkow@man.poznan.pl>, Blazej Pietrzak <blazej.pietrzak@man.poznan.pl>
+ *  Common build script.
  */
 
-//apply from: '../parent/superparent.gradle'
 apply from: '../parent/superparentlite.gradle'
 
 configurations {
@@ -24,14 +22,14 @@ configurations {
 project.ext {
     libraries = [
         hibernate: [ // hibernate and its runtime dependencies
-            [ group: 'org.hibernate'                name: 'hibernate-core'                  version: '4.2.0.Final'  ]
-            [ group: 'org.hibernate.ejb'            name: 'hibernate-entitymanager'         version: '4.2.0.Final'  ]
-            [ group: 'org.hibernate.annotations'    name: 'hibernate-commons-annotations'   version: '4.0.2.Final'  ]
-            [ group: 'org.dom4j'                    name: 'dom4j'                           version: '1.6.1'        ]
-            [ group: 'org.h2'                       name: 'h2'                              version: '1.3.170'      ]
-            [ group: 'org.jboss.logging'            name: 'jboss-logging'                   version: '3.1.0.GA'     ]
-            [ group: 'javassist'                    name: 'javassist'                       version: '3.18.0-GA'    ]
-            [ group: 'antlr'                        name: 'antlr'                           version: '2.7.7         ]
+            [ group: 'org.hibernate',               name: 'hibernate-core',                 version: '4.2.0.Final'  ],
+            [ group: 'org.hibernate.ejb',           name: 'hibernate-entitymanager',        version: '4.2.0.Final'  ],
+            [ group: 'org.hibernate.annotations',   name: 'hibernate-commons-annotations',  version: '4.0.2.Final'  ],
+            [ group: 'org.dom4j',                   name: 'dom4j',                          version: '1.6.1'        ],
+            [ group: 'org.h2',                      name: 'h2',                             version: '1.3.170'      ],
+            [ group: 'org.jboss.logging',           name: 'jboss-logging',                  version: '3.1.0.GA'     ],
+            [ group: 'javassist',                   name: 'javassist',                      version: '3.18.0-GA'    ],
+            [ group: 'antlr',                       name: 'antlr',                          version: '2.7.7'        ]
         ],
     ]
 }
@@ -40,15 +38,24 @@ project.ext {
 dependencies {
 
     // shared dependencies for all projects, mostly for itest as listing all karaf deps is painful
+    // only put the most common stuff in this list
 
-    testCompile group: 'junit',         name: 'junit',          version: '4.11'
+    testCompile group: 'junit',                                 name: 'junit',                          version: '4.11'
+
+    testRuntime group: 'org.hamcrest',                          name: 'hamcrest-core',                  version: '1.3'
+    testRuntime group: 'org.objenesis.instantiator',            name: 'objenesis',                      version: '1.2'
 
 
-    itestCompile group: 'junit',        name: 'junit',          version: '4.11'
+    itestCompile group: 'junit',                                name: 'junit',                          version: '4.11'
+    itestCompile group: 'javax.inject',                         name: 'javax.inject',                   version: '1'
+    itestCompile group: 'org.ops4j.pax.exam',       name: 'pax-exam',                   version: '2.6.0'
+    itestCompile group: 'org.ops4j.pax.exam.junit', name: 'pax-exam-junit4',            version: '2.6.0'
+    itestCompile group: 'org.ops4j.pax.exam.spi',   name: 'pax-exam-spi',               version: '2.6.0'
 
     itestRuntime group: 'com.google.common',                    name: 'guava',                          version: '14.0.1'
+    itestRuntime group: 'org.apache.commons.compress',          name: 'commons-compress',               version: '1.4.1'
+    itestRuntime group: 'org.apache.commons.io',                name: 'commons-io',                     version: '2.4'
     itestRuntime group: 'org.hamcrest',                         name: 'hamcrest-core',                  version: '1.3'
-
     itestRuntime group: 'org.ops4j.util.property',              name: 'ops4j-base-util-property',       version: '1.4.0'
     itestRuntime group: 'org.ops4j.lang',                       name: 'ops4j-base-lang',                version: '1.4.0'
     itestRuntime group: 'org.ops4j.store',                      name: 'ops4j-base-store',               version: '1.4.0'
@@ -59,10 +66,6 @@ dependencies {
     itestRuntime group: 'org.ops4j.pax.exam.container.remote',  name: 'pax-exam-container-remote',      version: '2.6.0'
     itestRuntime group: 'org.ops4j.pax.tinybundles',            name: 'tinybundles',                    version: '1.0.0'
     itestRuntime group: 'org.ops4j.pax.url',                    name: 'pax-url-mvn',                    version: '1.3.6' // mvn url handler
-
-    itestRuntime group: 'org.apache.commons.compress',          name: 'commons-compress',               version: '1.4.1'
-    itestRuntime group: 'org.apache.commons.io',                name: 'commons-io',                     version: '2.4'
-
     itestRuntime group: 'org.slf4j',                            name: 'slf4j-api',                      version: '1.7.5'
     itestRuntime group: 'org.slf4j.impl',                       name: 'slf4j-simple',                   version: '1.6.6'
 

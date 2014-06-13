@@ -8,11 +8,6 @@ apply from: '../parent/buildlocal.gradle'
 
 dependencies {
 
-    itestCompile group: 'javax.inject',             name: 'javax.inject',               version: '1'
-
-    itestCompile group: 'org.ops4j.pax.exam.junit', name: 'pax-exam-junit4',            version: '2.6.0'
-    itestCompile group: 'org.ops4j.pax.exam.spi',   name: 'pax-exam-spi',               version: '2.6.0'
-
     itestCompile project(':framework')
 
 }

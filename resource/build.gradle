@@ -33,16 +33,8 @@ dependencies {
 
     testRuntime project.ext.libraries.hibernate
 
-    testRuntime group: 'org.hamcrest',              name: 'hamcrest-core',                  version: '1.3'
-    testRuntime group: 'org.objenesis.instantiator',name: 'objenesis',                      version: '1.2'
-
 
     itestCompile project(':framework')
-
-    itestCompile group: 'javax.inject',             name: 'javax.inject',               version: '1'
-    itestCompile group: 'org.ops4j.pax.exam',       name: 'pax-exam',                   version: '2.6.0'
-    itestCompile group: 'org.ops4j.pax.exam.junit', name: 'pax-exam-junit4',            version: '2.6.0'
-    itestCompile group: 'org.ops4j.pax.exam.spi',   name: 'pax-exam-spi',               version: '2.6.0'
 
     itestRuntime group: 'org.osgi.core',                name: 'org.osgi.core',              version: '4.3.1'
     itestRuntime group: 'org.apache.felix.framework',   name: 'org.apache.felix.framework', version: '4.4.0'

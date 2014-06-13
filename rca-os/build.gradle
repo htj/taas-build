@@ -1,0 +1,43 @@
+/**
+ *
+ *  @author Michal Giertych
+ */
+
+apply from: '../parent/buildlocal.gradle'
+
+
+jar {
+    manifest {
+        instruction 'Bundle-Vendor', 'GEANT'
+        instruction 'Bundle-Description', 'Resource Control Agent - OpenStack'
+        instruction 'Export-Package', 'net.geant.taas.rca.os'
+        instruction 'Import-Package', 'org.h2', 'org.osgi.service.log', 'org.hibernate.proxy', 'javassist.util.proxy'
+    }
+}
+
+
+dependencies {
+
+    compile group: 'javax.persistence',     name: 'hibernate-jpa-2.1-api',                      version: '1.0.0.Final'
+
+    compile project(':resource')
+
+    compile group: 'javax.ws',              name: 'org.apache.servicemix.specs.jsr311-api',     version: '1.0-2.2.0'
+    compile group: 'org.apache.cxf',        name: 'cxf-bundle',                                 version: '2.7.6'
+
+    compile group:  'com.fasterxml.jackson.annotations',    name: 'jackson-annotations',            version: '2.4.0'
+    compile group:  'com.fasterxml.jackson.databind',       name: 'jackson-databind',               version: '2.4.0'
+    compile group:  'com.fasterxml.jackson.jaxrs.json',     name: 'jackson-jaxrs-json-provider',    version: '2.4.0'
+    compile group:  'com.fasterxml.jackson.jaxrs.base',     name: 'jackson-jaxrs-base',             version: '2.4.0'
+
+    runtime project.ext.libraries.hibernate
+
+
+    testCompile group: 'org.mockito',                       name: 'mockito-core',                   version: '1.9.5'
+
+
+    itestCompile project(':framework')
+
+}
+
+
