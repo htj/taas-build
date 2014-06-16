@@ -1,2 +1,2 @@
-include 'framework', 'sshWrapper', 'scheduler', 'resource', 'rca-vc', 'rca-openflow', 'rca-os'
+include 'framework', 'sshWrapper', 'scheduler', 'resource', 'rca-vc', 'rca-openflow', 'rca-os', 'accounting', 'parser'
 

@@ -1,0 +1,26 @@
+
+apply from: '../parent/buildlocal.gradle'
+
+apply plugin: 'groovy'
+
+
+jar {
+    manifest {
+        instruction 'Bundle-Vendor', 'Blazej Pietrzak'
+        instruction 'Bundle-Description', 'DSL parser'
+        instruction 'Export-Package', 'net.geant.taas.parser'
+    }
+}
+
+dependencies {
+
+    compile     group: 'org.groovy',        name: 'groovy-all',     version: '2.1.9'
+
+    compile     project(':resource')
+
+
+    testCompile group: 'org.hamcrest',    name: 'hamcrest-core',                  version: '1.3'
+
+}
+
+
