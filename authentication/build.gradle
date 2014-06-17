@@ -1,0 +1,24 @@
+/**
+ *
+ *  @author Simon Vocella
+ */
+
+apply from: '../parent/buildlocal.gradle'
+
+dependencies {
+
+    compile group: 'javax.servlet',             name: 'javax.servlet-api',                  version: '3.1.0'
+
+    itestCompile project(':framework')
+    itestCompile group: 'javax.ws',             name: 'javax.ws.rs-api',                    version: '2.0'
+
+}
+
+jar {
+    manifest {
+        instruction 'Bundle-Vendor', 'Simon Vocella'
+        instruction 'Bundle-Description', 'TaaS Authentication'
+        instruction 'Export-Package', 'net.geant.taas.authentication'
+        instruction 'Import-Package', '*'
+    }
+}
