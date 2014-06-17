@@ -1,0 +1,49 @@
+/**
+ *  
+ *  @author 
+*/
+apply from: '../parent/buildlocal.gradle'
+apply plugin: 'war'
+
+
+war {
+    baseName = 'admin-gui'
+    archiveName = 'taas-gui.war'
+}
+
+dependencies {
+
+    compile project(':resource')
+    compile project(':api')
+
+    compile group: 'javax.ws',                          name: 'javax.ws.rs-api',                    version: '2.0'
+    compile group: 'javax.mail',                        name: 'mail',                               version: '1.4.7'
+    compile group: 'javax.servlet',                     name: 'javax.servlet-api',                  version: '3.1.0'
+    compile group: 'org.apache.log4j',                  name: 'log4j',                              version: '1.2.16'
+    compile group: 'de.micromata.opengis.kml',          name: 'JavaAPIforKml',                      version: '2.2.0'
+
+    // consider just using the bundle, this is silly...
+    compile group: 'org.springframework.core',          name: 'spring-core',                        version: '3.2.3.RELEASE'
+    compile group: 'org.springframework',               name: 'spring-context',                     version: '3.2.3.RELEASE'
+    compile group: 'org.springframework.beans',         name: 'spring-beans',                       version: '3.2.3.RELEASE'
+    compile group: 'org.springframework.web',           name: 'spring-web',                         version: '3.2.2.RELEASE'
+    compile group: 'org.springframework.beans',         name: 'spring-beans',                       version: '3.2.3.RELEASE'
+    compile group: 'org.springframework.web.servlet',   name: 'spring-webmvc',                      version: '3.2.2.RELEASE'
+    compile group: 'org.springframework.mail',          name: 'spring-context-support',             version: '3.2.2.RELEASE'
+    compile group: 'org.springframework.transaction',   name: 'spring-tx',                          version: '3.2.2.RELEASE'
+
+    compile group: 'org.springframework.security',      name: 'spring-security-core',               version: '3.1.4.RELEASE'
+    compile group: 'org.springframework.security.web',  name: 'spring-security-web',                version: '3.1.4.RELEASE'
+
+    testCompile group: 'javax.servlet',                 name: 'servlet-api',                        version: '2.5-20081211'
+    testCompile group: 'org.mockito',                   name: 'mockito-core',                       version: '1.9.5'
+    testCompile group: 'org.hamcrest',                  name: 'hamcrest-core',                      version: '1.3'
+    testCompile group: 'org.springframework.test',      name: 'spring-test',                        version: '3.2.2.RELEASE'
+    testCompile group: 'org.apache.commons.io',         name: 'commons-io',                         version: '2.4'
+
+}
+
+//configurations {
+//    testCompile.exclude group: 'javax.servlet', module: 'javax.servlet-api'
+//    testCompile.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+//}
