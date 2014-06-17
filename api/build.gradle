@@ -7,7 +7,7 @@ apply from: '../parent/buildlocal.gradle'
 dependencies {
 
     compile group: 'javax.jms',                 name: 'jms-api',            version: '1.1-rev-1'
-    compile group: 'javax.ws',                  name: 'javax.ws.rs-api',    version: '2.0'
+    compile group: 'javax.ws',                  name: 'javax.ws.rs-api',    version: '2.0-m10'
     compile group: 'org.apache.activemq',       name: 'activemq-all',       version: '5.4.2'
 
     compile project(':resource')
@@ -21,9 +21,20 @@ dependencies {
 
     testCompile project(':framework')
 
+    testRuntime group: 'org.apache.neethi', name: 'neethi',                         version: '3.0.2'
+    testRuntime group: 'org.apache.cxf',    name: 'cxf-bundle',                     version: '2.7.6'
+    testRuntime group: 'javax.wsdl',        name: 'wsdl4j',                         version: '1.6.3'
+    testRuntime group: 'javax.servlet',     name: 'javax.servlet-api',              version: '3.1.0'
+
+    testRuntime group: 'org.eclipse.jetty.util',    name: 'jetty-util',             version: '8.1.7.v20120910'
+    testRuntime group: 'org.eclipse.jetty.server',  name: 'jetty-server',           version: '8.1.7.v20120910'
+    testRuntime group: 'org.eclipse.jetty.http',    name: 'jetty-http',             version: '8.1.7.v20120910'
+    testRuntime group: 'org.eclipse.jetty.io',      name: 'jetty-io',               version: '8.1.7.v20120910'
+
+    // might need some more, tests are failing with org.apache.cxf.interceptor.Fault: Could not send Message.
+
     // depends request handler...
 //    testRuntime project(':parser')
-
 
 
 //    compile 'org.apache.cxf:cxf-rt-frontend-jaxrs:2.7.6'
