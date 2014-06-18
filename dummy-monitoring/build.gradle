@@ -1,0 +1,30 @@
+/**
+ *
+ *  @author Jakub Gutkowski <jgutkow@man.poznan.pl>
+ */
+apply from: '../parent/buildlocal.gradle'
+
+dependencies {
+
+    compile project(':resource')
+    compile group: 'javax.jms',             name: 'jms-api',            version: '1.1-rev-1'
+
+    runtime project.ext.libraries.hibernate
+
+
+    testCompile project(':framework')
+    testCompile group: 'org.mockito',           name: 'mockito-core',       version: '1.9.5'
+
+
+    itestCompile project(':framework')
+
+}
+
+jar {
+    manifest {
+        instruction 'Bundle-Vendor', 'Jakub Gutkowski'
+        instruction 'Bundle-Description', 'Dummy Monitoring'
+        instruction 'Export-Package', 'net.geant.taas.dummyMonitoring'
+        instruction 'Import-Package', 'org.apache.derby.jdbc', 'org.h2', 'net.geant.taas.resource.rh', ' net.geant.taas.resource.calendar', '*'
+    }
+}
